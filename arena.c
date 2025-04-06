@@ -25,7 +25,7 @@ void arena_init(Arena *arena, size_t size) {
 
 // Initializes the given pointer to the nearest alignment boundary
 // NOTE: i need to understand this one better
-size_t align_forward(size_t offset, size_t alignment) {
+static size_t align_forward(size_t offset, size_t alignment) {
   size_t reminder = offset % alignment;
   if (reminder == 0)
     return offset;

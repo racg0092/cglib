@@ -1,4 +1,4 @@
-#include "arena.c"
+#include <arena.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -16,6 +16,7 @@ Str new_str(const char *str, Arena *arena) {
   if (!arena)
     abort();
 
+  // initialized empty string
   if (!str) {
     Str string = {.len = 0, .capacity = 24};
     string.str = (char *)arena_alloc(arena, 24, sizeof(uint8_t));
