@@ -14,11 +14,17 @@ typedef struct {
 } Str;
 
 // Creates a new string if null is passed then it creates an empty string
-Str new_str(const char *str, Allocator *a);
+Str str_new(const char *str, Allocator *a);
 
-void print_str(Str *string);
-void to_upper(Str *string);
+void str_print(Str *string);
+
+/*void str_to_upper(Str *string);*/
 
 bool str_equals(Str string, const char *str);
 
+// Appends new [char *] to [string]
+void str_concat_from_const(Str *string, const char *str);
+
+// Appends [str] to [string]
+void str_concat(Str *string, Str *str);
 #endif
