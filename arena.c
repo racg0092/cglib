@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
   uint8_t *base; // Start of the memory block
@@ -47,6 +48,8 @@ void *arena_alloc(Arena *arena, size_t size, size_t alignment) {
 void arena_reset(Arena *arena) { arena->offset = 0; }
 
 void arena_free(Arena *arena) {
+  // zero randomizer to overwrite data
+  memset(arena->base, 0, arena->size);
   free(arena->base);
   arena->base = NULL;
   arena->size = 0;
