@@ -49,7 +49,7 @@ void arena_reset(Arena *arena) { arena->offset = 0; }
 
 void arena_free(Arena *arena) {
   // zero randomizer to overwrite data
-  memset(arena->base, 0, arena->size);
+  memset(arena->base, 0xA5, arena->size);
   free(arena->base);
   arena->base = NULL;
   arena->size = 0;
