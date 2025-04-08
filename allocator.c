@@ -19,7 +19,7 @@ static Arena *_arena = &arena;
 // Sets the arena size for the default allocator
 
 static void *default_alloc(size_t size) {
-  if (!_arena) {
+  if (_arena->size == 0) {
     arena_init(_arena, ARENA_INIT_SIZE);
   }
   return arena_alloc(_arena, size, size);

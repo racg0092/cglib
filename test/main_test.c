@@ -1,5 +1,6 @@
-#include "./arena.h"
-#include "./list.h"
+#include "../allocator.h"
+#include "../arena.h"
+#include "../list.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,15 +11,15 @@ typedef struct {
 } Man;
 
 void testing_list() {
-  Arena a;
-  arena_init(&a, 1024 * 5);
+  Allocator *a = get_default_alloc(NULL);
+
   Man jon = {.id = 0, .name = "Jon Doe"};
   Man maria = {.id = 1, .name = "Maria"};
 
   printf("%zu\n", sizeof(Man));
   printf("%zu\n", sizeof jon);
 
-  List list = new_list(&a, sizeof(Man));
+  List list = new_list(sizeof(Man), a);
   if (!list.items) {
     fprintf(stderr, "out of memory\n");
     abort();
@@ -38,7 +39,7 @@ void testing_list() {
   printf("id=%d, name=%s\n", first->id, first->name);
   printf("id=%d, name=%s\n", second->id, second->name);
 
-  arena_free(&a);
+  a->free(NULL);
 }
 
 int main() { testing_list(); }
