@@ -1,4 +1,4 @@
-#include <arena.h>
+#include "allocator.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -12,14 +12,14 @@ typedef struct {
   uint32_t capacity;
 } Str;
 
-Str new_str(const char *str, Arena *arena) {
-  if (!arena)
-    abort();
+Str new_str(const char *str, Allocator *a) {
+  if (!a)
+    a = get_default_alloc(NULL);
 
   // initialized empty string
   if (!str) {
     Str string = {.len = 0, .capacity = 24};
-    string.str = (char *)arena_alloc(arena, 24, sizeof(uint8_t));
+    string.str = (char *)a->alloc(sizeof(uint8_t));
     if (!string.str)
       abort();
     return string;
@@ -34,7 +34,7 @@ Str new_str(const char *str, Arena *arena) {
 
   Str string = {.len = len};
 
-  string.str = (char *)arena_alloc(arena, len + 1, sizeof(uint8_t));
+  string.str = (char *)a->alloc(sizeof(uint8_t));
   if (!string.str) {
     abort();
   }
