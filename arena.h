@@ -8,6 +8,7 @@ typedef struct {
   uint8_t *base; // Start of the memory block
   size_t size;   // Total size of the arena
   size_t offset; // Current offset for allocation
+
 } Arena;
 
 // Initializes arena

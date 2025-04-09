@@ -5,10 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO: can i track specific allocation for a more complex free
+
 typedef struct {
   uint8_t *base; // Start of the memory block
   size_t size;   // Total size of the arena
   size_t offset; // Current offset for allocation
+
 } Arena;
 
 // Initializes the memory arena
@@ -42,6 +45,7 @@ void *arena_alloc(Arena *arena, size_t size, size_t alignment) {
 
   void *ptr = arena->base + aligned_offset;
   arena->offset = aligned_offset + size;
+
   return ptr;
 }
 
@@ -51,6 +55,7 @@ void arena_free(Arena *arena) {
   // zero randomizer to overwrite data
   memset(arena->base, 0xA5, arena->size);
   free(arena->base);
+
   arena->base = NULL;
   arena->size = 0;
   arena->offset = 0;
