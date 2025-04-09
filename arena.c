@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// TODO: can i track specific allocation for a more complex free
-
 typedef struct {
   uint8_t *base; // Start of the memory block
   size_t size;   // Total size of the arena

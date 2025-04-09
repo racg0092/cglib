@@ -13,7 +13,7 @@ typedef struct {
 } List;
 
 // Creates a new list
-List new_list(size_t tsize, Allocator *_alloc) {
+List list_new(size_t tsize, Allocator *_alloc) {
   if (!_alloc) {
     _alloc = get_default_alloc(NULL);
   }
@@ -26,7 +26,7 @@ List new_list(size_t tsize, Allocator *_alloc) {
 }
 
 // Get item from list
-void *get_list_item(List *l, int index, size_t size) {
+void *list_get_item(List *l, int index, size_t size) {
   // if index is bigger than len then throw error
   if (index > l->len) {
     fprintf(stderr, "error index out of range line=%d\n", __LINE__);
@@ -49,7 +49,7 @@ void *get_list_item(List *l, int index, size_t size) {
   return i;
 }
 
-void add_to_list(List *l, void *data, size_t size) {
+void list_add_to(List *l, void *data, size_t size) {
   if (l->len >= l->cap) {
     // TODO: increase list space and capacity
     printf("warning: list does not have any more space, file=%s line=%d",
@@ -67,14 +67,14 @@ void add_to_list(List *l, void *data, size_t size) {
   l->len++;
 }
 
-void add_items_to_list(List *l, void *data[], size_t s) {
+void list_add_multiple(List *l, void *data[], size_t s) {
   int i = 0;
   for (;;) {
     void *item = data[i];
     if (!item) {
       break;
     }
-    add_to_list(l, item, s);
+    list_add_to(l, item, s);
     i++;
   }
 }
