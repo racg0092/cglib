@@ -1,9 +1,14 @@
 #include "../core.h"
+#include "../os.h"
+#include "../str.h"
+#include "tests.h"
 #include <stdio.h>
 
 int main() {
 
-  assert(1 == 2, "expected ", NULL);
+  assert(str_equals_raw(OS, "linux"), "expected OS to be linux");
 
-  printf("%s: ALL TEST PASSED\n", __FILE__);
+  assert(str_equals_raw(ARCH, "arm"), "expected ARCH to be arm");
+
+  test_completed(__FILE__);
 }

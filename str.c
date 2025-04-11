@@ -92,6 +92,22 @@ void str_concat_from_const(Str *string, const char *str) {
 // TODO: the difference between upper case and lower case is always 32
 void str_to_upper(Str *string) {}
 
+// Compares [str] to [str1]
+bool str_equals_raw(const char *str, const char *str1) {
+  bool eq = true;
+
+  int i = 0;
+
+  while (!str && !str1) {
+    if (str[i] != str1[i]) {
+      eq = false;
+      break;
+    }
+  }
+
+  return eq;
+}
+
 bool str_equals(Str *string, const char *str) {
   bool eq = true;
   for (int i = 0; i < string->len; i++) {
