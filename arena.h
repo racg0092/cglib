@@ -9,6 +9,7 @@ typedef struct {
   size_t size;   // Total size of the arena
   size_t offset; // Current offset for allocation
 
+  uint8_t cangrow;
 } Arena;
 
 // Initializes arena
@@ -23,4 +24,6 @@ void arena_reset(Arena *arena);
 // Frees all memory in the arena
 void arena_free(Arena *arena);
 
+// Sets the offset of the arena to the specific offset passed in
+void arena_reset_to(Arena *a, size_t offset);
 #endif

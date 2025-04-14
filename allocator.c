@@ -9,12 +9,18 @@ typedef void (*free_alloc)(void *ptr);
 static int ARENA_INIT_SIZE = 1024 * 5;
 
 typedef struct {
+  size_t offset;
   alloc alloc;
   free_alloc free;
 } Allocator;
 
+// TODO: and realloc to grow arena
+
 static Arena arena = {};
 static Arena *_arena = &arena;
+static Allocator default_temp = {};
+
+size_t get_arena_offset() { return _arena->offset; }
 
 // Sets the arena size for the default allocator
 static void *default_alloc(size_t size) {
@@ -30,11 +36,36 @@ static void default_free(void *ptr) {
     return;
   }
 
+  // TODO: maybe the allocator is not using an arena need to handle this better
   if (!_arena) {
     fprintf(stderr, "error default arena was never initiated");
     abort();
   }
   arena_free(_arena);
+}
+
+static void temp_alloc_free(void *ptr) {
+  if (ptr) {
+    free(ptr);
+    return;
+  }
+
+  // TODO: maybe the allocator is not using an arena need to handle this better
+  if (!_arena) {
+    fprintf(stderr, "error default arena was never initiated");
+    abort();
+  }
+
+  arena_reset_to(_arena, default_temp.offset);
+}
+
+Allocator *temp_alloc(void) {
+  // NOTE: global variable not too sure about the side effects of this and what
+  // errors it could cause
+  default_temp.offset = _arena->offset;
+  default_temp.alloc = default_alloc;
+  default_temp.free = temp_alloc_free;
+  return &default_temp;
 }
 
 static Allocator _d_alloc = {

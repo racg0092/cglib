@@ -4,7 +4,15 @@
 #include "tests.h"
 #include <stdio.h>
 
+void dd(void *ctx) { printf("DEFER 1\n"); }
+void dd1(void *ctx) { printf("DEFER 2\n"); }
+
 int main() {
+
+  defer(dd, NULL);
+  defer(dd1, NULL);
+
+  printf("I PRINT BEFORE DEFER");
 
   assert(str_equals_raw(OS, "linux"), "expected OS to be linux");
 

@@ -22,4 +22,19 @@
            __LINE__);                                                          \
     abort();                                                                   \
   }
+
+#define concat_inner(x, y) x##y
+#define concat(x, y) concat_inner(x, y)
+
+#define defer(func, ctx)                                                       \
+  __attribute__((cleanup(run_defer), unused))                                  \
+  Defer concat(_defer_, __LINE__) = {func, ctx};
+
+typedef struct {
+  void (*func)(); // function to exec
+  void *ctx;      // context
+} Defer;
+
+void run_defer(Defer *d);
+
 #endif // !CORE_H

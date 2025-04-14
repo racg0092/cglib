@@ -10,6 +10,7 @@ typedef struct {
   size_t size;   // Total size of the arena
   size_t offset; // Current offset for allocation
 
+  uint8_t cangrow;
 } Arena;
 
 // Initializes the memory arena
@@ -38,6 +39,7 @@ void *arena_alloc(Arena *arena, size_t size, size_t alignment) {
   size_t aligned_offset = align_forward(arena->offset, alignment);
 
   if (aligned_offset + size > arena->size) {
+    // TODO: grow if configuration set to true
     return NULL; // out of memory
   }
 
@@ -48,6 +50,9 @@ void *arena_alloc(Arena *arena, size_t size, size_t alignment) {
 }
 
 void arena_reset(Arena *arena) { arena->offset = 0; }
+
+// Sets the offset of the arena to the specific offset passed in
+void arena_reset_to(Arena *a, size_t offset) { a->offset = offset; }
 
 void arena_free(Arena *arena) {
   // zero randomizer to overwrite data
